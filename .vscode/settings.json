@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Oolong-3D-Game.sln"
+    "dotnet.defaultSolution": "My project.sln"
 }
