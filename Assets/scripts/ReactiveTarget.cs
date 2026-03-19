@@ -7,7 +7,7 @@ public class ReactiveTarget : MonoBehaviour
     // Start is called before the first frame update
     public void ReactToHit()
     {
-         WanderingAI behaviour = GetComponent<WanderingAI>();
+        WanderingAI behaviour = GetComponent<WanderingAI>();
         if (behaviour != null)
         {
             behaviour.SetAlive(false);

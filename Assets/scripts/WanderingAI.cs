@@ -7,12 +7,14 @@ public class WanderingAI : MonoBehaviour
     
     //fields for the fireball prefab and current instance 
     [SerializeField] GameObject fireballPrefab;
+    
     private GameObject fireball;
 
     //speed of the wandering game object
     //and how far to look for obstacles
     public float speed = 3.0f;
     public float obstacleRange = 5.0f;
+
 
     //state of the game object
     private bool isAlive;
@@ -63,6 +65,7 @@ public class WanderingAI : MonoBehaviour
                     fireball.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
                     fireball.transform.rotation = transform.rotation;
                 }
+
             } else if(hit.distance < obstacleRange) {
                     float angle = Random.Range(-110, 110);
                     transform.Rotate(0, angle, 0);
@@ -70,6 +73,8 @@ public class WanderingAI : MonoBehaviour
                 }
 
         }
+
+
         
     }
 

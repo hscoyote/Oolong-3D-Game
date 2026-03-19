@@ -5,7 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class RelativeMovement : MonoBehaviour
 {
+    [SerializeField] private AudioClip jumpsound;
+
     public float moveSpeed = 6.0f;
+    public float runSpeed = 16.0f;
 
     public float jumpspeed = 20.0f;
     public float gravity = -9.8f;
@@ -16,14 +19,25 @@ public class RelativeMovement : MonoBehaviour
 
     private CharacterController _charController;
 
+    ///
+    //
+    private bool allowedToMove;
+    public void SetMovement(bool b)
+    {
+        allowedToMove = b;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
         _charController = GetComponent<CharacterController>();
         //initialize the vertical speed to the minimum falling speed at the start of the existign function
         _vertSpeed = minFall;
+        allowedToMove = true;
     }
 
+    
     //this script needs a reference to the object to move relative to
     [SerializeField] private Transform target;
 
@@ -33,11 +47,16 @@ public class RelativeMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ///start with vector (0,0,0) and asdd movement components progressively 
+        if (allowedToMove)
+        {
+             ///start with vector (0,0,0) and asdd movement components progressively 
         Vector3 movement = Vector3.zero;
 
+
         float horInput = Input.GetAxis("Horizontal");
-        float vertInput = Input.GetAxis("Horizontal");
+        float vertInput = Input.GetAxis("Vertical");
+
+       
 
         //only handle movement while arrow keys are pressed
         if (horInput != 0 || vertInput != 0)
@@ -72,10 +91,24 @@ public class RelativeMovement : MonoBehaviour
                 if (Input.GetButton("Jump"))
                 {
                     _vertSpeed=jumpspeed;
+
+                    // play sound 
+                    SoundManager.instance.PlaySoundClip(jumpsound, transform, 1f);
                 } else
                 {
                     _vertSpeed = minFall;
+                } 
+                  //movement speed changes if Left Shift is pressed when player is grounded
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    moveSpeed = runSpeed;
+            
+                } else
+                {
+                    moveSpeed = 6.0f;
+
                 }
+                
             } else
             {
                 //if not on the ground, then apply gravity until terminal velocity is reached
@@ -89,6 +122,8 @@ public class RelativeMovement : MonoBehaviour
 
             movement *= Time.deltaTime;
             _charController.Move(movement);
-
+            
+        }
+       
     }
 }
